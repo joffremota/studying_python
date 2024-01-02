@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Dashboard</h2>
+        <p id="server-time">Carregando...</p>
+        <a href="{{ url_for('landing') }}"><button>Voltar à Tela de Aterrissagem</button></a>
+    </div>
+
+    <script>
+        // Atualiza o horário do servidor a cada 5 segundos
+        function updateServerTime() {
+            fetch('/get_server_time')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('server-time').innerText = 'Horário de São Paulo: ' + data.time;
+                });
+        }
+
+        setInterval(updateServerTime, 5000); // Atualiza a cada 5 segundos
+        updateServerTime(); // Atualiza imediatamente ao carregar a página
+    </script>
+</body>
+</html>
