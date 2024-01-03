@@ -38,15 +38,19 @@ def file_upload():
 @app.route('/upload', methods=['POST'])
 def upload():
     if 'fileInput' in request.files:
-        file = request.files['fileInput']
-        if file.filename != '':
-            filename, file_extension = os.path.splitext(file.filename)
-            file_info = {
-                'filename': file.filename,
-                'size': len(file.read()),
-                'extension': file_extension
-            }
-            return render_template('file_upload.html', file_info=file_info)
+        files = request.files.getlist('fileInput')  # Obter uma lista de arquivos enviados
+
+        file_info_list = []
+        for file in files:
+            if file.filename != '':
+                filename, file_extension = os.path.splitext(file.filename)
+                file_info_list.append({
+                    'filename': file.filename,
+                    'size': len(file.read()),
+                    'extension': file_extension
+                })
+
+        return render_template('file_upload.html', file_info_list=file_info_list)
     
     return redirect(url_for('file_upload'))
 
